@@ -141,14 +141,14 @@ function EditListing() {
 
     if (geolocationEnabled) {
       const response = await fetch(
-        `http://api.positionstack.com/v1/forward?access_key=${process.env.REACT_APP_GEOCODE_API_KEY}&query=${address}`
+        `https://api.geoapify.com/v1/geocode/search?text=${address}&apiKey=${process.env.REACT_APP_GEOCODE_API_KEY}`
       );
 
       const data = await response.json();
 
-      geolocation.lat = data.data[0]?.latitude ?? 0
-      geolocation.lng = data.data[0]?.longitude ?? 0
-      location = data.data[0] ? data.data[0]?.label : undefined
+      geolocation.lat = data.features[0]?.properties.lat ?? 0
+      geolocation.lng = data.features[0]?.properties.lon ?? 0
+      location = data.features[0] ? data.features[0]?.properties.formatted : undefined
     } else {
       geolocation.lat = latitude;
       geolocation.lng = longitude;
