@@ -7,11 +7,14 @@ import {v4 as uuidv4} from 'uuid'
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
+import getSymbolFromCurrency from 'currency-symbol-map'
 
 function CreateListing() {
   // eslint-disable-next-line
   const [geolocationEnabled, setGeoLocationEnabled] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [currency, setCurrency] = useState('USD')
+  const [currencySymbol, setCurrencySymbol] = useState('$')
   const [formData, setFormData] = useState({
     type: "rent",
     name: "",
@@ -26,6 +29,8 @@ function CreateListing() {
     images: {},
     latitude: 0,
     longitude: 0,
+    currencySign: '$',
+    currencyCode: 'USD'
   });
 
   const {
@@ -180,6 +185,9 @@ function CreateListing() {
       return
     })
 
+    formData.currencySign = currencySymbol
+    formData.currencyCode = currency
+
     const formDataCopy = {
       ...formData,
       imageUrls,
@@ -198,6 +206,12 @@ function CreateListing() {
     toast.success('Listing saved')
     navigate(`/category/${formDataCopy.type}/${docRef.id}`)
   };
+
+  const onCurrency = (e) => {
+    setCurrency(e.target.value)
+    const sign = getSymbolFromCurrency(e.target.value)
+    setCurrencySymbol(sign)
+  }
 
   return (
     <div className="profile">
@@ -385,6 +399,7 @@ function CreateListing() {
 
           <label className="formLabel">Regular Price</label>
           <div className="formPriceDiv">
+            <span className='currencyInput'>{currencySymbol}</span>
             <input
               className="formInputSmall"
               type="number"
@@ -395,22 +410,36 @@ function CreateListing() {
               max="750000000"
               required
             />
-            {type === "rent" && <p className="formPriceText">$ / Month</p>}
+            <label for='currency' />
+            <select id='currency' className='formPriceSelect' value={currency} onChange={onCurrency}>
+              <option value='USD'>USD</option>
+              <option value='EUR'>EUR</option>
+              <option value='INR'>INR</option>
+              <option value='GBP'>GBP</option>
+              <option value='JPY'>JPY</option>
+              <option value='KRW'>KRW</option>
+              <option value='CAD'>CAD</option>
+              <option value='AUD'>AUD</option>
+            </select>
+            {type === "rent" && <p className="formPriceText">&nbsp; / Month</p>}
           </div>
 
           {offer && (
             <>
               <label className="formLabel">Discounted Price</label>
-              <input
-                className="formInputSmall"
-                type="number"
-                id="discountedPrice"
-                value={discountedPrice}
-                onChange={onMutate}
-                min="50"
-                max="750000000"
-                required={offer}
-              />
+              <div className="formPriceDiv">
+              <span className='currencyInput'>{currencySymbol}</span>
+                <input
+                  className="formInputSmall"
+                  type="number"
+                  id="discountedPrice"
+                  value={discountedPrice}
+                  onChange={onMutate}
+                  min="50"
+                  max="750000000"
+                  required={offer}
+                />
+              </div>
             </>
           )}
 

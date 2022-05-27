@@ -740,6 +740,15 @@ button {
   justify-content: center;
   align-items: center;
 }
+
+.currencyInput {
+  padding: 0.8rem 0.9rem;
+  margin: 0.5rem 1rem 0 0;
+  background-color: #ffffff;
+  font-weight: 600;
+  border-radius: 1rem;
+}
+
 .formButtonActive {
   background-color: #00cc66;
   color: #ffffff;
@@ -783,7 +792,13 @@ button {
 }
 
 .formPriceText {
+  /* margin-left: -1.5rem; */
+  font-weight: 600;
+}
+
+.formPriceSelect {
   margin-left: -1.5rem;
+  border-radius: 2rem;
   font-weight: 600;
 }
 

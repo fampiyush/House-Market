@@ -82,7 +82,7 @@ function Listing() {
 
       <div className="listingDetails">
         <p className="listingName">
-          {listing.name} - $
+          {listing.name} - {listing.currencySign}
           {listing.offer
             ? listing.discountedPrice
                 .toString()
@@ -97,7 +97,7 @@ function Listing() {
         </p>
         {listing.offer && (
           <p className="discountPrice">
-            ${listing.regularPrice - listing.discountedPrice} discount
+            {listing.currencySign}{listing.regularPrice - listing.discountedPrice} discount
           </p>
         )}
 
